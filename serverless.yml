@@ -1,0 +1,69 @@
+service: maas-assignment
+
+frameworkVersion: '3'
+
+provider:
+  name: aws
+  runtime: nodejs14.x
+  environment:
+    TABLE_NAME: user-table
+  iam:
+    role:
+      statements:
+        - Effect: 'Allow'
+          Action:
+            - 'dynamodb:GetItem'
+            - 'dynamodb:PutItem'
+          Resource:
+            - !Sub 'arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/${self:provider.environment.TABLE_NAME}'
+
+functions:
+  user-fetch:
+    handler: src/user/fetch/index.handler
+    events:
+      - httpApi:
+          method: GET
+          path: /user/{id}
+  user-create:
+    handler: src/user/create/index.handler
+    events:
+      - httpApi:
+          method: POST
+          path: /user
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
+custom:
+  dynamodb:
+    stages:
+      - dev
+    start:
+      migrate: true
+
+resources:
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:provider.environment.TABLE_NAME}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: N
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+    countersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: counter-table
+        AttributeDefinitions:
+          - AttributeName: TableName
+            AttributeType: S
+        KeySchema:
+          - AttributeName: TableName
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+    

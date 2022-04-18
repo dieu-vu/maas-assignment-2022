@@ -1,0 +1,23 @@
+{
+  "name": "maas-assignment",
+  "version": "1.0.0",
+  "description": "MaaS Global recruitment assignment",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettier": "prettier --write .",
+    "lint": "eslint --ignore-path=.gitignore ."
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^2.6.1",
+    "serverless": "^3.10.0"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.58.0",
+    "@aws-sdk/util-dynamodb": "^3.58.0",
+    "serverless-dynamodb-local": "^0.2.40",
+    "serverless-offline": "^8.7.0",
+    "sls": "^0.1.0"
+  }
+}
