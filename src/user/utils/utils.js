@@ -1,5 +1,5 @@
 'use strict';
-
+// Module to handle actions in POST method
 const {
     DynamoDBClient,
     GetItemCommand,
@@ -125,7 +125,7 @@ const checkExistingEmail = async (emailString) => {
     try {
         const data = await dbClient.send(command);
         if (data.Count > 0) {
-            console.log('CHECK EMAIL RESPONSE', data);
+            // console.log('CHECK EMAIL RESPONSE', data);
             return true;
         }
         return false;
@@ -143,7 +143,6 @@ const validateEmail = async (emailString) => {
         return err;
     } else {
         let regex = /^([a-zA-Z0-9/-_.]+@[a-zA-Z0-9/-_.]+.[a-z0-9]{2,3})$/;
-        console.log('REGEX TEST', regex.test(emailString));
         if (!regex.test(emailString)) {
             const err = httpError('Invalid email format', 400);
             console.log('email invalid');

@@ -22,7 +22,6 @@ async function handler(event) {
         const data = await client.send(command);
         return unmarshall(data.Item);
     } catch (error) {
-        console.log('ERROR MESSAGE', typeof error.message);
         if (error.message.toLowerCase().includes('no value defined')) {
             return httpError('User not found', 400);
         }
