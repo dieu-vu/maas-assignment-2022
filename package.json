@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "MaaS Global recruitment assignment",
   "scripts": {
-    "test": "jest",
+    "test": "jest --forceExit",
     "prettier": "prettier --write .",
     "lint": "eslint --ignore-path=.gitignore ."
   },

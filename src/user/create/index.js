@@ -78,7 +78,7 @@ async function handler(event) {
                 data.$metadata.httpStatusCode == 200
             ) {
                 return JSON.parse(
-                    '{"statusText": "User created successfully"}'
+                    `{"statusText": "User created successfully", "userId": ${nextValidUserId}}`
                 );
             } else {
                 return data;
