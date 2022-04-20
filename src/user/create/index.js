@@ -73,7 +73,16 @@ async function handler(event) {
             console.log('Read data:');
             console.log(data);
             console.log(data.$metadata);
-            return data;
+            if (
+                data.$metadata.httpStatusCode &&
+                data.$metadata.httpStatusCode == 200
+            ) {
+                return JSON.parse(
+                    '{"statusText": "User created successfully"}'
+                );
+            } else {
+                return data;
+            }
         } catch (error) {
             console.log(error);
         }
