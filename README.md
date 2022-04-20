@@ -8,7 +8,7 @@ Amongst the three options for how to do the assignment:
 > 2. Use any framework and modules you feel comfortable with to build the assignment API.
 > 3. Show us something more incredible that you've built. Then, prepare to tell us more about the solution.
 
-I tried to study use the technology suggested (dynamoDB and serverless) for the first time in my life. Previously, I only had chance to work with express. Due to the limited time for the assignment and lack of experience, the assignment may still have many flaws. I really appreciate constructive feedbacks from the hiring team.
+I tried to study use the technology suggested (dynamoDB and serverless) for the first time. Previously, I only had chance to work with the `express` framework. Due to the limited time for the assignment and lack of experience, the assignment may still have many flaws. I really appreciate constructive feedbacks from the hiring team.
 
 Implementation includes:
 
