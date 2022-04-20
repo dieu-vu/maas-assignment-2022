@@ -35,7 +35,6 @@ async function handler(event) {
 
     // Check if email exists in user-table
     const validEmail = await utils.validateEmail(userEmail);
-    // console.log('EMAIL VALIDATOR', validEmail);
     if (validEmail != true) {
         return validEmail;
     } else {
@@ -70,9 +69,6 @@ async function handler(event) {
         try {
             console.log('PARAMS', params);
             const data = await client.send(new PutCommand(params));
-            console.log('Read data:');
-            console.log(data);
-            console.log(data.$metadata);
             if (
                 data.$metadata.httpStatusCode &&
                 data.$metadata.httpStatusCode == 200

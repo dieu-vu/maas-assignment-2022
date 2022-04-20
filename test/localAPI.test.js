@@ -16,10 +16,7 @@ test('Test fetch API first time should return not found error', (done) => {
     };
     const req = http
         .request(options, (res) => {
-            console.log(`statusCode: ${res.statusCode}`);
             res.on('data', (chunk) => {
-                console.log(chunk);
-                console.log('Body:', JSON.parse(chunk));
                 expect(JSON.parse(chunk).status).toBe(expectedOutput.status);
                 expect(JSON.parse(chunk).errorMessage).toBe(
                     expectedOutput.errorMessage
