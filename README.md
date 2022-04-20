@@ -4,15 +4,15 @@
 
 Amongst the three options for how to do the assignment:
 
-1. Use this boilerplate as a base for the assignment. This is the technology that we use in our backend.
-2. Use any framework and modules you feel comfortable with to build the assignment API.
-3. Show us something more incredible that you've built. Then, prepare to tell us more about the solution.
+> 1. Use this boilerplate as a base for the assignment. This is the technology that we use in our backend.
+> 2. Use any framework and modules you feel comfortable with to build the assignment API.
+> 3. Show us something more incredible that you've built. Then, prepare to tell us more about the solution.
 
-I tried to study use the technology suggested (dynamoDB and serverless) for the first time in my life. Before I only had chance to work with express. Due to the limited time for the assignment and lack of experience, the assignment may still have many flaws. I really appreciate constructive feedbacks from the hiring team.
+I tried to study use the technology suggested (dynamoDB and serverless) for the first time in my life. Previously, I only had chance to work with express. Due to the limited time for the assignment and lack of experience, the assignment may still have many flaws. I really appreciate constructive feedbacks from the hiring team.
 
 Implementation includes:
 
--   The API is implemented with `Node.js`, `dynamoDB` and `serverless-offline`.
+-   The API is implemented with `Node.js`, `dynamoDB` and `serverless-offline` plugin.
 -   The unit test is implemented with `Jest`.
 -   Error handling and response HTTP status codes
 -   AWS SDK V3
