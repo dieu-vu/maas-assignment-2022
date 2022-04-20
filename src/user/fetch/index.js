@@ -4,21 +4,26 @@ const {
     DynamoDBClient,
     GetItemCommand,
     DescribeTableCommand,
-    ListTablesCommand,
     DeleteTableCommand,
 } = require('@aws-sdk/client-dynamodb');
 const {marshall, unmarshall} = require('@aws-sdk/util-dynamodb');
+const {httpError} = require('../utils/errors');
 
 async function handler(event) {
+    const userId = parseInt(event.pathParameters.id);
     const client = new DynamoDBClient({
         region: 'localhost',
         endpoint: 'http://localhost:8000/shell',
     });
     const params = {
         TableName: 'user-table',
-        Key: {
-            id: {N: 1},
-        },
+        // TableName: 'counter-table',
+        Key: marshall({
+            id: userId,
+        }),
+        // Key: marshall({
+        //     tableName: 'user-table',
+        // }),
     };
     const command = new GetItemCommand(params);
     // const command = new DescribeTableCommand(params);
@@ -27,13 +32,16 @@ async function handler(event) {
 
     try {
         const data = await client.send(command);
-        data.$metadata.statusCode = data.$metadata.httpStatusCode;
-        console.log('Read data:');
-        console.log(data);
-        console.log(data.$metadata);
-        return data;
+        // data.$metadata.statusCode = data.$metadata.httpStatusCode;
+        // console.log('Read data:', data.Table.ItemCount);
+        // return data;
+        return unmarshall(data.Item);
     } catch (error) {
-        console.log(error);
+        console.log('ERROR MESSAGE', typeof error.message);
+        if (error.message.toLowerCase().includes('no value defined')) {
+            return httpError('User not found', 400);
+        }
+        return;
     }
     //console.log(data);
     return;
