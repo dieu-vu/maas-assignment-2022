@@ -13,6 +13,7 @@ const {
     UpdateCommand,
     DynamoDBDocumentClient,
 } = require('@aws-sdk/lib-dynamodb');
+const {httpError} = require('../utils/errors');
 
 const client = new DynamoDBClient({
     region: 'localhost',
@@ -135,10 +136,31 @@ const checkExistingEmail = async (emailString) => {
     }
 };
 
+const validateEmail = async (emailString) => {
+    const emailExisted = await checkExistingEmail(emailString);
+    if (emailExisted) {
+        const err = httpError('Email already existed', 400);
+        console.log('email existed');
+        return err;
+    } else {
+        let regex = new RegExp(
+            '/[a-zA-Z0-9-_.]+@[a-zA-Z0-9-_.]+.[a-z0-9]{2,3}/g'
+        );
+        console.log('REGEX TEST', regex.test(emailString));
+        if (!regex.test(emailString)) {
+            const err = httpError('Invalid email format', 400);
+            console.log('email invalid');
+            return err;
+        } else {
+            return true;
+        }
+    }
+};
+
 module.exports = {
     checkIfCounterTableEmpty,
     initCounter,
-    checkExistingEmail,
     incrementCounter,
     getHighestUserId,
+    validateEmail,
 };

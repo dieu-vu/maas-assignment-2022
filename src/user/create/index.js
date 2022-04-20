@@ -34,11 +34,10 @@ async function handler(event) {
     var current = new Date().toISOString();
 
     // Check if email exists in user-table
-    const emailExisted = await utils.checkExistingEmail(userEmail);
-    if (emailExisted) {
-        const err = httpError('Email already existed', 400);
-        console.log('email existed');
-        return err;
+    const validEmail = await utils.validateEmail(userEmail);
+    console.log('EMAIL VALIDATOR', validEmail);
+    if (validEmail != true) {
+        return validEmail;
     } else {
         // Generate Id:
         // Check if the counter-table is empty
