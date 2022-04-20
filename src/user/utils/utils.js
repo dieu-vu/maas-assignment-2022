@@ -9,7 +9,6 @@ const {
 } = require('@aws-sdk/client-dynamodb');
 const {marshall, unmarshall} = require('@aws-sdk/util-dynamodb');
 const {
-    QueryCommand,
     UpdateCommand,
     DynamoDBDocumentClient,
 } = require('@aws-sdk/lib-dynamodb');
@@ -72,8 +71,6 @@ const initCounter = async (client) => {
 
 // Generate the next ID for the user put method
 const incrementCounter = async (client) => {
-    //const aws = require('aws-sdk');
-    //const docClient = new aws.DynamoDB.DocumentClient();
     const currentHighestId = await getHighestUserId(client);
     console.log('CURRENT ID', currentHighestId);
     const nextId = parseInt(currentHighestId) + 1;
@@ -116,6 +113,7 @@ const getHighestUserId = async (client) => {
     }
 };
 
+// Function to check if the email string exists in the DB
 const checkExistingEmail = async (emailString) => {
     const params = {
         TableName: 'user-table',
@@ -136,6 +134,7 @@ const checkExistingEmail = async (emailString) => {
     }
 };
 
+// Function to validate email address
 const validateEmail = async (emailString) => {
     const emailExisted = await checkExistingEmail(emailString);
     if (emailExisted) {
@@ -143,9 +142,7 @@ const validateEmail = async (emailString) => {
         console.log('email existed');
         return err;
     } else {
-        let regex = new RegExp(
-            '/[a-zA-Z0-9-_.]+@[a-zA-Z0-9-_.]+.[a-z0-9]{2,3}/g'
-        );
+        let regex = /^([a-zA-Z0-9/-_.]+@[a-zA-Z0-9/-_.]+.[a-z0-9]{2,3})$/;
         console.log('REGEX TEST', regex.test(emailString));
         if (!regex.test(emailString)) {
             const err = httpError('Invalid email format', 400);

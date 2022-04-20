@@ -35,7 +35,7 @@ async function handler(event) {
 
     // Check if email exists in user-table
     const validEmail = await utils.validateEmail(userEmail);
-    console.log('EMAIL VALIDATOR', validEmail);
+    // console.log('EMAIL VALIDATOR', validEmail);
     if (validEmail != true) {
         return validEmail;
     } else {
@@ -55,6 +55,7 @@ async function handler(event) {
         // Get the highestId from the counter-table
         const nextValidUserId = await utils.getHighestUserId(client);
         console.log('CREATED ID', nextValidUserId);
+
         // Create POST request
         const params = {
             TableName: 'user-table',

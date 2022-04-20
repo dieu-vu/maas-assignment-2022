@@ -1,11 +1,6 @@
 'use strict';
 
-const {
-    DynamoDBClient,
-    GetItemCommand,
-    DescribeTableCommand,
-    DeleteTableCommand,
-} = require('@aws-sdk/client-dynamodb');
+const {DynamoDBClient, GetItemCommand} = require('@aws-sdk/client-dynamodb');
 const {marshall, unmarshall} = require('@aws-sdk/util-dynamodb');
 const {httpError} = require('../utils/errors');
 
@@ -17,24 +12,14 @@ async function handler(event) {
     });
     const params = {
         TableName: 'user-table',
-        // TableName: 'counter-table',
         Key: marshall({
             id: userId,
         }),
-        // Key: marshall({
-        //     tableName: 'user-table',
-        // }),
     };
     const command = new GetItemCommand(params);
-    // const command = new DescribeTableCommand(params);
-    // const command = new ListTablesCommand({});
-    // const command = new DeleteTableCommand(params);
 
     try {
         const data = await client.send(command);
-        // data.$metadata.statusCode = data.$metadata.httpStatusCode;
-        // console.log('Read data:', data.Table.ItemCount);
-        // return data;
         return unmarshall(data.Item);
     } catch (error) {
         console.log('ERROR MESSAGE', typeof error.message);
@@ -43,7 +28,6 @@ async function handler(event) {
         }
         return;
     }
-    //console.log(data);
     return;
 }
 
