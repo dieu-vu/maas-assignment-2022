@@ -6,7 +6,7 @@ const http = require('http');
 test('Test fetch API first time should return not found error', (done) => {
     const expectedOutput = {
         errorMessage: 'User not found',
-        status: 400,
+        status: 502,
     };
     let options = {
         hostname: 'localhost',
@@ -78,7 +78,7 @@ test('Test Create User with invalid email format', () => {
     };
     const expectedOutput = JSON.stringify({
         errorMessage: 'Invalid email format',
-        status: 400,
+        status: 502,
     });
     const req = http
         .request(options, (res) => {
@@ -116,7 +116,7 @@ test('Test check existing email in user fetch', () => {
     };
     const expectedOutput = JSON.stringify({
         errorMessage: 'Email already existed',
-        status: 400,
+        status: 502,
     });
     const req = http
         .request(options, (res) => {

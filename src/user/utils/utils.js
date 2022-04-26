@@ -138,13 +138,13 @@ const checkExistingEmail = async (emailString) => {
 const validateEmail = async (emailString) => {
     const emailExisted = await checkExistingEmail(emailString);
     if (emailExisted) {
-        const err = httpError('Email already existed', 400);
+        const err = httpError('Email already existed', 502);
         console.log('email existed');
         return err;
     } else {
         let regex = /^([a-zA-Z0-9/-_.]+@[a-zA-Z0-9/-_.]+.[a-z0-9]{2,3})$/;
         if (!regex.test(emailString)) {
-            const err = httpError('Invalid email format', 400);
+            const err = httpError('Invalid email format', 502);
             console.log('email invalid');
             return err;
         } else {

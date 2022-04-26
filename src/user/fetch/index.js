@@ -23,7 +23,7 @@ async function handler(event) {
         return unmarshall(data.Item);
     } catch (error) {
         if (error.message.toLowerCase().includes('no value defined')) {
-            return httpError('User not found', 400);
+            return httpError('User not found', 502);
         }
         return;
     }
