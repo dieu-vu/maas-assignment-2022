@@ -10,6 +10,8 @@
   "author": "",
   "license": "MIT",
   "devDependencies": {
+    "axios": "^0.27.0",
+    "isomorphic-fetch": "^3.0.0",
     "jest": "^27.5.1",
     "prettier": "^2.6.1",
     "serverless": "^3.10.0"

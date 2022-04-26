@@ -1,41 +1,34 @@
 'use strict';
 jest.setTimeout(60000);
 
-const http = require('http');
+require('isomorphic-fetch');
 
-test('Test fetch API first time should return not found error', (done) => {
+const baseUrl = 'http://localhost:3000';
+
+const fetchData = async (endpoint, options) => {
+    try {
+        const respData = await fetch(endpoint, options);
+        const data = await respData.json();
+        return data;
+    } catch (error) {
+        console.log(error.errorMessage);
+    }
+};
+
+test('Test fetch API first time should return not found error', async () => {
     const expectedOutput = {
         errorMessage: 'User not found',
         status: 502,
     };
-    let options = {
-        hostname: 'localhost',
-        path: '/user/2',
-        port: 3000,
-        method: 'GET',
-    };
-    const req = http
-        .request(options, (res) => {
-            res.on('data', (chunk) => {
-                expect(JSON.parse(chunk).status).toBe(expectedOutput.status);
-                expect(JSON.parse(chunk).errorMessage).toBe(
-                    expectedOutput.errorMessage
-                );
-                done();
-            });
-        })
-        .on('error', (err) => {
-            console.log('test create user first time error', err);
-        })
-        .end();
+    let options = {};
+    const data = await fetchData(baseUrl + '/user/1', options);
+    expect(data.status).toBe(expectedOutput.status);
+    expect(data.errorMessage).toBe(expectedOutput.errorMessage);
 });
 
-test('Test Create User API with valid email', () => {
-    let body = JSON.stringify({email: 'test2@email.com'});
+test('Test Create User API with valid email', async () => {
+    let body = JSON.stringify({email: 'test@email.com'});
     let options = {
-        hostname: 'localhost',
-        path: '/user',
-        port: 3000,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -45,30 +38,13 @@ test('Test Create User API with valid email', () => {
     };
     const expectedOutput = 'User created successfully';
 
-    const req = http
-        .request(options, (res) => {
-            console.log(`statusCode: ${res.statusCode}`);
-            res.on('data', (chunk) => {
-                console.log(chunk);
-                data += chunk;
-            });
-            res.on('end', () => {
-                console.log('Body:', JSON.parse(data));
-                expect(data.statusText).toBe(expectedOutput);
-            });
-        })
-        .on('error', (err) => {
-            console.log('test create user with valid email error', err);
-        });
-    req.end();
+    const data = await fetchData(baseUrl + '/user/', options);
+    expect(data.statusText).toBe(expectedOutput);
 });
 
-test('Test Create User with invalid email format', () => {
+test('Test Create User with invalid email format', async () => {
     let body = JSON.stringify({email: 'test_invalid_email'});
     let options = {
-        hostname: 'localhost',
-        path: '/user',
-        port: 3000,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -76,37 +52,17 @@ test('Test Create User with invalid email format', () => {
         },
         body: body,
     };
-    const expectedOutput = JSON.stringify({
+    const expectedOutput = {
         errorMessage: 'Invalid email format',
         status: 502,
-    });
-    const req = http
-        .request(options, (res) => {
-            console.log(`statusCode: ${res.statusCode}`);
-            res.on('data', (chunk) => {
-                console.log(chunk);
-                data += chunk;
-            });
-            res.on('end', () => {
-                console.log('Body:', JSON.parse(data));
-                expect(data).toBe(expectedOutput);
-            });
-        })
-        .on('error', (err) => {
-            console.log(
-                'test create user with invalid email format error',
-                err
-            );
-        })
-        .end();
+    };
+    const data = await fetchData(baseUrl + '/user/', options);
+    expect(data).toStrictEqual(expectedOutput);
 });
 
-test('Test check existing email in user fetch', () => {
+test('Test check existing email in user fetch', async () => {
     let body = JSON.stringify({email: 'test@email.com'});
     let options = {
-        hostname: 'localhost',
-        path: '/user',
-        port: 3000,
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -114,27 +70,10 @@ test('Test check existing email in user fetch', () => {
         },
         body: body,
     };
-    const expectedOutput = JSON.stringify({
+    const expectedOutput = {
         errorMessage: 'Email already existed',
         status: 502,
-    });
-    const req = http
-        .request(options, (res) => {
-            console.log(`statusCode: ${res.statusCode}`);
-            res.on('data', (chunk) => {
-                console.log(chunk);
-                data += chunk;
-            });
-            res.on('end', () => {
-                console.log('Body:', JSON.parse(data));
-                expect(data).toBe(expectedOutput);
-            });
-        })
-        .on('error', (err) => {
-            console.log(
-                'test create user with invalid email format error',
-                err
-            );
-        })
-        .end();
+    };
+    const data = await fetchData(baseUrl + '/user/', options);
+    expect(data).toStrictEqual(expectedOutput);
 });
